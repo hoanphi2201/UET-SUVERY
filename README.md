@@ -1,2 +1,2 @@
-# UET-SUVERY
-Project suvery int3306 6
+# UET-SURVEY
+## INT3306-6 
