@@ -1,7 +1,7 @@
-import { extract, AuthenticationGuard } from '@app/core';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
+import { extract } from './core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 const routes: Routes = [
@@ -17,7 +17,7 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: './modules/dashboard/dashboard.module#DashboardModule',
-        data: { title: extract('Home') }
+        data: { title: extract('Dashboard') }
       }
     ]
   },
@@ -30,9 +30,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
   providers: []
 })

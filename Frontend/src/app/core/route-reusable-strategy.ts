@@ -1,8 +1,4 @@
-import {
-  ActivatedRouteSnapshot,
-  DetachedRouteHandle,
-  RouteReuseStrategy
-} from '@angular/router';
+import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
 
 /**
  * A route strategy allowing for explicit route reuse.
@@ -14,10 +10,7 @@ export class RouteReusableStrategy extends RouteReuseStrategy {
     return false;
   }
 
-  public store(
-    route: ActivatedRouteSnapshot,
-    detachedTree: DetachedRouteHandle | null
-  ): void {}
+  public store(route: ActivatedRouteSnapshot, detachedTree: DetachedRouteHandle | null): void {}
 
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
     return false;
@@ -27,10 +20,7 @@ export class RouteReusableStrategy extends RouteReuseStrategy {
     return null;
   }
 
-  public shouldReuseRoute(
-    future: ActivatedRouteSnapshot,
-    curr: ActivatedRouteSnapshot
-  ): boolean {
+  public shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
     return future.routeConfig === curr.routeConfig || future.data.reuse;
   }
 }

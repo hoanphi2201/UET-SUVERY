@@ -1,21 +1,24 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { SettingsService } from '@delon/theme';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'layout-header',
+  selector: 'app-header',
   templateUrl: './header.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
-  searchToggleStatus: boolean;
+export class HeaderComponent implements OnInit {
+  @Output() collapsedDesktopEvent = new EventEmitter<boolean>();
+  @Output() collapsedMobileEvent = new EventEmitter<boolean>();
+  isCollapsedDesktop = false;
+  isCollapsedMobile = false;
+  constructor() {}
 
-  constructor(public settings: SettingsService) {}
-
-  toggleCollapsedSidebar() {
-    this.settings.setLayout('collapsed', !this.settings.layout.collapsed);
+  ngOnInit() {}
+  toggleCollapsedDesktop() {
+    this.isCollapsedDesktop = !this.isCollapsedDesktop;
+    this.collapsedDesktopEvent.emit(this.isCollapsedDesktop);
   }
-
-  searchToggleChange() {
-    this.searchToggleStatus = !this.searchToggleStatus;
+  toggleCollapsedMobile() {
+    this.isCollapsedMobile = !this.isCollapsedMobile;
+    this.collapsedMobileEvent.emit(this.isCollapsedMobile);
   }
 }

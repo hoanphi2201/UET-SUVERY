@@ -1,0 +1,63 @@
+<div class="row align-items-center">
+  <div class="col-md-5">
+    <nz-card class="ant-card ant-card-bordered">
+      <div class="ant-card-body">
+        <h2 class="m-t-20 ">Sign In</h2>
+        <p class="m-b-30 ">Enter your credential to get access</p>
+        <form class="login-form ant-form ant-form-horizontal" novalidate="" nz-form="">
+          <nz-form-item class="ant-form-item ant-row">
+            <nz-form-label nzfor="userName" nzrequired="" class="ant-form-item-label">
+              <label for="userName" class="ant-form-item-required">Username</label>
+            </nz-form-label>
+            <nz-form-control class="ng-tns-c15-13 ant-form-item-control-wrapper ">
+              <div class="ant-form-item-children">
+                <nz-input-group [nzPrefix]="prefixUsername">
+                  <input type="text" nz-input placeholder="Enter your username" />
+                </nz-input-group>
+                <ng-template #prefixUsername><i nz-icon nzType="user"></i></ng-template>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="ant-form-item ant-row">
+            <nz-form-label nzfor="password" nzrequired="" class="ant-form-item-label">
+              <label for="password" class="ant-form-item-required">Password</label>
+            </nz-form-label>
+            <a class="float-right font-size-13 p-t-10 text-muted" href="#/authentication/reset-password-1"
+              >Forget Password?</a
+            >
+            <nz-form-control class="ng-tns-c15-14 ant-form-item-control-wrapper ">
+              <div class="ant-form-item-control">
+                <span class="ant-form-item-children">
+                  <nz-input-group [nzPrefix]="prefixPassword">
+                    <input type="text" nz-input placeholder="Enter your username" />
+                  </nz-input-group>
+                  <ng-template #prefixPassword><i nz-icon nzType="lock"></i></ng-template>
+                </span>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="ant-form-item ant-row">
+            <nz-form-control class="ng-tns-c15-15 ant-form-item-control-wrapper ">
+              <div class="ant-form-item-control">
+                <span class="ant-form-item-children">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span class="font-size-13 text-muted"
+                      >Don't have an account? <a class="small" href="#/authentication/sign-up-2"> Signup</a></span
+                    >
+                    <button class="login-form-button ant-btn ant-btn-primary" nz-button="" nz-wave="[object Object]">
+                      <span>Sign In</span>
+                    </button>
+                  </div>
+                  <span class="ant-form-item-children-icon"></span>
+                </span>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </nz-card>
+  </div>
+  <div class="offset-md-1 col-md-6 d-none d-md-block">
+    <img alt="" class="img-fluid" src="./assets/images/others/login-2.png" />
+  </div>
+</div>

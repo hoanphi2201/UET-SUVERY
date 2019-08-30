@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,6 +7,7 @@ import { filter, map, switchMap } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { Logger, I18nService, untilDestroyed } from '@app/core';
+import { WindowresizeService } from './shared/services/windowresize.service';
 
 const log = new Logger('App');
 
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private translateService: TranslateService,
+    private windowresizeService: WindowresizeService,
     private i18nService: I18nService
   ) {}
 
@@ -33,14 +35,9 @@ export class AppComponent implements OnInit, OnDestroy {
     log.debug('init');
 
     // Setup translations
-    this.i18nService.init(
-      environment.defaultLanguage,
-      environment.supportedLanguages
-    );
+    this.i18nService.init(environment.defaultLanguage, environment.supportedLanguages);
 
-    const onNavigationEnd = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    );
+    const onNavigationEnd = this.router.events.pipe(filter(event => event instanceof NavigationEnd));
 
     // Change page title on navigation or language change, based on route data
     merge(this.translateService.onLangChange, onNavigationEnd)
@@ -62,6 +59,10 @@ export class AppComponent implements OnInit, OnDestroy {
           this.titleService.setTitle(this.translateService.instant(title));
         }
       });
+  }
+  @HostListener('window:resize', ['$event'])
+  resizeHandler($event: any): void {
+    this.windowresizeService.setSize($event.target.innerWidth);
   }
 
   ngOnDestroy() {

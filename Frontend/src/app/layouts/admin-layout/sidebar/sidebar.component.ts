@@ -1,11 +1,13 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { SettingsService } from '@delon/theme';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'layout-sidebar',
+  selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
-  constructor(public settings: SettingsService) {}
+export class SidebarComponent implements OnInit {
+  @Input() isCollapsed: boolean;
+  constructor() {}
+
+  ngOnInit() {}
 }

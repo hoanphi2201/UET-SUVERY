@@ -1,7 +1,13 @@
-<div class="alain-default__progress-bar" *ngIf="isFetching"></div>
-<layout-header class="alain-default__header"></layout-header>
-<layout-sidebar class="alain-default__aside"></layout-sidebar>
-<section class="alain-default__content">
-  <router-outlet></router-outlet>
-</section>
-<ng-template #settingHost></ng-template>
+<div class="common-layout is-default" [ngClass]="displaySideBar()">
+  <app-header
+    (collapsedMobileEvent)="receiveCollapsedMobile($event)"
+    (collapsedDesktopEvent)="receiveCollapsedDesktop($event)"
+  ></app-header>
+  <app-sidebar [isCollapsed]="collapedSideBarDesktop"></app-sidebar>
+  <div class="page-container">
+    <div class="main-content">
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

@@ -1,16 +1,25 @@
-<div class="alain-default__aside-inner">
-  <div nz-dropdown nzTrigger="click" [nzDropdownMenu]="userMenu" class="alain-default__aside-user">
-    <nz-avatar class="alain-default__aside-user-avatar" [nzSrc]="settings.user.avatar"></nz-avatar>
-    <div class="alain-default__aside-user-info">
-      <strong>{{ settings.user.name }}</strong>
-      <p class="mb0">{{ settings.user.email }}</p>
-    </div>
-  </div>
-  <nz-dropdown-menu #userMenu="nzDropdownMenu">
-    <ul nz-menu>
-      <li nz-menu-item routerLink="/pro/account/center">{{ 'menu.account.center' | translate }}</li>
-      <li nz-menu-item routerLink="/pro/account/settings">{{ 'menu.account.settings' | translate }}</li>
-    </ul>
-  </nz-dropdown-menu>
-  <sidebar-nav class="d-block py-lg"></sidebar-nav>
-</div>
+<perfect-scrollbar class="side-nav" sidenav>
+  <nz-layout>
+    <nz-sider nzWidth="100%" nzTheme="light" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+      <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <li nz-submenu nzTitle="User" nzIcon="user">
+          <ul>
+            <li nz-menu-item>Tom</li>
+            <li nz-menu-item>Bill</li>
+            <li nz-menu-item>Alex</li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Team" nzIcon="team">
+          <ul>
+            <li nz-menu-item>Team 1</li>
+            <li nz-menu-item>Team 2</li>
+          </ul>
+        </li>
+        <li nz-menu-item>
+          <i nz-icon nzType="file"></i>
+          <span>File</span>
+        </li>
+      </ul>
+    </nz-sider>
+  </nz-layout>
+</perfect-scrollbar>
