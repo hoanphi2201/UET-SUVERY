@@ -1,7 +1,35 @@
 <perfect-scrollbar class="side-nav" sidenav>
-  <nz-layout>
-    <nz-sider nzWidth="100%" nzTheme="light" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
-      <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+  <div>
+    <div nz-dropdown nzTrigger="click" [nzDropdownMenu]="userMenu" class="alain-default__aside-user">
+      <nz-avatar
+        [nzSize]="32"
+        [ngClass]="{ 'alain-default__aside-user-avatar': !isCollapsed }"
+        nzIcon="user"
+        nzSrc="./assets/images/avatars/thumb-3.jpg"
+      >
+      </nz-avatar>
+      <div class="alain-default__aside-user-info">
+        <strong>Admin</strong>
+        <p class="mb-0">cipchk@qq.com</p>
+      </div>
+    </div>
+    <nz-dropdown-menu #userMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item routerLink="/pro/account/center">Admin</li>
+        <li nz-menu-item routerLink="/pro/account/settings">cipchk@qq.com</li>
+      </ul>
+    </nz-dropdown-menu>
+  </div>
+  <div>
+    <nz-sider nzTheme="light" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+      <ul
+        class="side-nav-menu"
+        nz-menu
+        [ngClass]="{ 'border-collapse': isCollapsed }"
+        nzMode="inline"
+        [nzTheme]="sideNavDark ? 'dark' : 'light'"
+        [nzInlineCollapsed]="isCollapsed"
+      >
         <li nz-submenu nzTitle="User" nzIcon="user">
           <ul>
             <li nz-menu-item>Tom</li>
@@ -21,5 +49,5 @@
         </li>
       </ul>
     </nz-sider>
-  </nz-layout>
+  </div>
 </perfect-scrollbar>

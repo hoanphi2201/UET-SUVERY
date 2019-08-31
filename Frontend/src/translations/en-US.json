@@ -1,4 +1,8 @@
 {
+  "menu.fullscreen": "Fullscreen",
+  "menu.fullscreen.exit": "Exit Fullscreen",
+  "menu.lang": "Language",
+  "menu.clear.local.storage": "Clear Local Storage",
   "APP_NAME": "UET SUVERY",
   "About": "About",
   "Hello world !": "Hello world !",

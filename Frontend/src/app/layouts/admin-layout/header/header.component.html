@@ -1,18 +1,14 @@
 <div class="header">
   <div class="logo logo-dark">
     <a href=""
-      ><img alt="Logo" src="./assets/images/logo/logo.png"/><img
-        alt="Logo"
-        class="logo-fold"
-        src="assets/images/logo/logo-fold.png"
+      ><img alt="Logo" src="./assets/images/logo/logo.png"/>
+      <img alt="Logo" class="logo-fold" src="./assets/images/logo/logo-fold.png"
     /></a>
   </div>
   <div class="logo logo-white">
     <a href=""
-      ><img alt="Logo" src="./assets/images/logo/logo-white.png"/><img
-        alt="Logo"
-        class="logo-fold"
-        src="assets/images/logo/logo-fold-white.png"
+      ><img alt="Logo" src="./assets/images/logo/logo-white.png"/>
+      <img alt="Logo" class="logo-fold" src="./assets/images/logo/logo-fold-white.png"
     /></a>
   </div>
   <div class="nav-wrap">
@@ -102,6 +98,30 @@
         </nz-dropdown-menu>
       </li>
       <li>
+        <a (click)="openThemeConfig()">
+          <i class="trigger" nz-icon nzType="appstore"></i>
+        </a>
+        <app-setting-drawer></app-setting-drawer>
+      </li>
+      <li>
+        <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="setting">
+          <i class="trigger" nz-icon nzType="setting"></i>
+        </a>
+        <nz-dropdown-menu #setting="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item>
+              <header-fullscreen></header-fullscreen>
+            </li>
+            <li nz-menu-item>
+              <header-storage></header-storage>
+            </li>
+            <li nz-menu-item>
+              <header-i18n></header-i18n>
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+      </li>
+      <li>
         <span class="p-h-10 pointer" nz-dropdown nzTrigger="click" [nzDropdownMenu]="profile">
           <nz-avatar nzIcon="user" nzSrc="./assets/images/avatars/thumb-3.jpg"> </nz-avatar>
         </span>
@@ -154,12 +174,6 @@
             </li>
           </ul>
         </nz-dropdown-menu>
-      </li>
-      <li>
-        <a>
-          <i class="trigger" nz-icon nzType="appstore"></i>
-        </a>
-        <nz-drawer nzplacement="right" nztitle="Theme Config"> </nz-drawer>
       </li>
     </ul>
   </div>

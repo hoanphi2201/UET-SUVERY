@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { SettingDrawerService } from '@app/shared';
 
 @Component({
   selector: 'app-header',
@@ -10,15 +11,26 @@ export class HeaderComponent implements OnInit {
   @Output() collapsedMobileEvent = new EventEmitter<boolean>();
   isCollapsedDesktop = false;
   isCollapsedMobile = false;
-  constructor() {}
 
-  ngOnInit() {}
+  constructor(private settingDrawerService: SettingDrawerService) {}
+
+  ngOnInit() {
+    this.settingDrawerService.getFoldedMenu().subscribe(res => {
+      this.isCollapsedDesktop = res;
+      this.collapsedDesktopEvent.emit(this.isCollapsedDesktop);
+    });
+  }
   toggleCollapsedDesktop() {
     this.isCollapsedDesktop = !this.isCollapsedDesktop;
     this.collapsedDesktopEvent.emit(this.isCollapsedDesktop);
   }
+
   toggleCollapsedMobile() {
     this.isCollapsedMobile = !this.isCollapsedMobile;
     this.collapsedMobileEvent.emit(this.isCollapsedMobile);
+  }
+
+  openThemeConfig(): void {
+    this.settingDrawerService.setVisible(true);
   }
 }

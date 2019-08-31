@@ -1,0 +1,33 @@
+<nz-drawer
+  nzPlacement="right"
+  nzTitle="Theme Config"
+  [nzClosable]="false"
+  [nzVisible]="visible"
+  (nzOnClose)="closeThemeConfig()"
+>
+  <div class="m-b-30">
+    <h5 class="m-b-0">Header Color</h5>
+    <p>Config header background color</p>
+    <div class="m-t-10">
+      <nz-radio-group class="color-selector" (ngModelChange)="changeHeaderColor($event)" [(ngModel)]="headerColor">
+        <label nz-radio [ngClass]="'bg-' + item" [nzValue]="item" *ngFor="let item of DEFAULT_COLORS"></label>
+      </nz-radio-group>
+    </div>
+  </div>
+  <nz-divider nzType="horizontal"></nz-divider>
+  <div>
+    <h5 class="m-b-0">Side Nav Dark</h5>
+    <p>Change Side Nav to dark</p>
+    <div class="m-t-10">
+      <nz-switch (ngModelChange)="changeSideNavDark($event)" [(ngModel)]="sideNavDark"></nz-switch>
+    </div>
+  </div>
+  <nz-divider nzType="horizontal"></nz-divider>
+  <div>
+    <h5 class="m-b-0">Folded Menu</h5>
+    <p>Toggle Folded Menu</p>
+    <div class="m-t-10">
+      <nz-switch (ngModelChange)="changeFoldedMenu($event)" [(ngModel)]="foldedMenu"></nz-switch>
+    </div>
+  </div>
+</nz-drawer>

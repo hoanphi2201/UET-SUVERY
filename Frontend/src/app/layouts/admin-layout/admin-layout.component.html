@@ -1,4 +1,4 @@
-<div class="common-layout is-default" [ngClass]="displaySideBar()">
+<div class="common-layout" [class]="headerColor" [ngClass]="displaySideBar()">
   <app-header
     (collapsedMobileEvent)="receiveCollapsedMobile($event)"
     (collapsedDesktopEvent)="receiveCollapsedDesktop($event)"

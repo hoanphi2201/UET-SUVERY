@@ -7,7 +7,7 @@ import { filter, map, switchMap } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { Logger, I18nService, untilDestroyed } from '@app/core';
-import { WindowresizeService } from './shared/services/windowresize.service';
+import { WindowresizeService } from './shared';
 
 const log = new Logger('App');
 

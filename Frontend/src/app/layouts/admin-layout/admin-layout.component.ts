@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SettingDrawerService } from '@app/shared';
 
 @Component({
   selector: 'app-admin-layout',
@@ -7,9 +8,18 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 export class AdminLayoutComponent implements OnInit, OnDestroy {
   collapedSideBarDesktop: boolean;
   collapedSideBarMobile: boolean;
-  constructor() {}
+  headerColor: string;
+  sideNavDark: boolean;
+  constructor(private settingDrawerService: SettingDrawerService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.settingDrawerService.getHeaderColor().subscribe(res => {
+      this.headerColor = 'is-' + res;
+    });
+    this.settingDrawerService.getSideNavDark().subscribe(res => {
+      this.sideNavDark = res;
+    });
+  }
   receiveCollapsedDesktop($event: any) {
     this.collapedSideBarDesktop = $event;
   }
@@ -21,7 +31,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   displaySideBar() {
     return {
       'is-folded': this.collapedSideBarDesktop,
-      'is-expand': this.collapedSideBarMobile
+      'is-expand': this.collapedSideBarMobile,
+      'is-side-nav-dark': this.sideNavDark
     };
   }
 }

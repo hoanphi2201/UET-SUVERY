@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SettingDrawerService } from '@app/shared';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,7 +8,12 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
   @Input() isCollapsed: boolean;
-  constructor() {}
+  sideNavDark: boolean;
+  constructor(private settingDrawerService: SettingDrawerService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.settingDrawerService.getSideNavDark().subscribe(res => {
+      this.sideNavDark = res;
+    });
+  }
 }
