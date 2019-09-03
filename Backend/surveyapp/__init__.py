@@ -1,15 +1,13 @@
 # coding=utf-8
 import logging
 import flask
-from surveyapp import services, models
 import re
-
-# from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 __author__ = 'Ductt'
 _logger = logging.getLogger(__name__)
 
-SENTRY_DSN = 'SENTRY_DSN'
+jwt = JWTManager()
 
 
 def _after_request(response):
@@ -36,8 +34,7 @@ def create_app():
     import config
     import os
 
-    from . import api, models
-    from surveyapp import helpers
+    from . import api, models, services, helpers
 
     def load_app_config(app):
         """
@@ -55,10 +52,18 @@ def create_app():
     )
     app.json_encoder = helpers.JSONEncoder
     load_app_config(app)
-    # CORS(app)
     app.after_request(_after_request)
+    app.config['JWT_SECRET_KEY'] = config.FLASK_APP_SECRET_KEY
+    app.config['JWT_BLACKLIST_ENABLED'] = True
+    app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
+    app.config['JWT_ERROR_MESSAGE_KEY'] = 'message'
+    app.config['CORS_SUPPORTS_CREDENTIALS'] = True
+    jwt.init_app(app)
 
-    app.secret_key = config.FLASK_APP_SECRET_KEY
+    @jwt.token_in_blacklist_loader
+    def check_if_token_in_blacklist(decrypted_token):
+        jti = decrypted_token['jti']
+        return models.RevokedToken.is_jti_blacklisted(jti=jti)
     models.init_app(app)
     api.init_app(app)
     services.init_app(app)

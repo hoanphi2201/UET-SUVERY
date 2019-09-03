@@ -3,6 +3,8 @@ import logging
 from flask import Blueprint
 from flask_restplus import Api
 from surveyapp.extensions.exceptions import global_error_handler
+from .auth import ns as auth_ns
+from surveyapp import jwt
 
 __author__ = 'Teko'
 _logger = logging.getLogger(__name__)
@@ -33,6 +35,9 @@ def init_app(app, **kwargs):
     :param kwargs:
     :return:
     """
+    jwt._set_error_handler_callbacks(api)
     app.register_blueprint(api_bp)
+    api.add_namespace(auth_ns)
     api.error_handlers[Exception] = global_error_handler
+
 

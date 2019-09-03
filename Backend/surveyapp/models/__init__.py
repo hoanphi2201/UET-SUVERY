@@ -32,4 +32,5 @@ def init_app(app, **kwargs):
 from .base import TimestampMixin
 from .user import User
 from .survey_form import SurveyForm
-from  .survey_answer import SurveyAnswer
+from .survey_answer import SurveyAnswer
+from .revoked_token import RevokedToken

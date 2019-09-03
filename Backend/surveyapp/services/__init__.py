@@ -7,3 +7,6 @@ _logger = logging.getLogger(__name__)
 
 def init_app(app, **kwargs):
     pass
+
+
+from . import auth

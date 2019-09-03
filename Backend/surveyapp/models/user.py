@@ -22,8 +22,7 @@ class User(db.Model, TimestampMixin):
     is_admin = db.Column(db.Boolean(), default=False)
     password_hash = db.Column(db.String(255))
     image = db.Column(db.Text(), nullable=True)
-
-    survey_form = relationship("SurveyForm", back_populates="user", cascade="all, delete-orphan")
+    survey_form = relationship('SurveyForm', cascade="save-update, merge, delete")
 
     @property
     def password(self):

@@ -1,6 +1,6 @@
 FROM python:3.6
 
-EXPOSE 5000
+EXPOSE 8080
 WORKDIR /code
 ADD requirements.txt /code/
 
@@ -10,6 +10,6 @@ RUN pip install -r requirements.txt
 
 ADD . /code/
 
-CMD ["python", "-m", "flask", "run"]
+CMD ["python", "app.py"]
 
 

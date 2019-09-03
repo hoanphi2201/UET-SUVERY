@@ -18,6 +18,6 @@ class SurveyForm(db.Model, TimestampMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False, unique=True)
     json = db.Column(db.Text())
-    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    survey_answer = relationship("SurveyAnswer", back_populates="survey_form", cascade="all, delete-orphan")
+    survey_answer = relationship("SurveyAnswer", cascade="save-update, merge, delete")
