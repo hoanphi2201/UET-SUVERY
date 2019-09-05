@@ -17,7 +17,7 @@ class User(db.Model, TimestampMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     username = db.Column(db.String(255), nullable=False, unique=True)
-    fullname = db.Column(db.String(255), nullable=False)
+    fullname = db.Column(db.String(255), nullable=True)
     is_active = db.Column(db.Boolean(), default=True)
     is_admin = db.Column(db.Boolean(), default=False)
     password_hash = db.Column(db.String(255))
