@@ -50,5 +50,6 @@ class User(db.Model, TimestampMixin):
             'email': self.email,
             'fullname': self.fullname,
             'ia_active': self.is_active,
-            'is_admin': self.is_admin
+            'is_admin': self.is_admin,
+            'created_at': self.created_at
         }
