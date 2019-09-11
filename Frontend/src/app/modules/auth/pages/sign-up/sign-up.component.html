@@ -1,0 +1,57 @@
+<div class="row align-items-center">
+  <div class="col-md-6 d-none d-md-block">
+    <img alt="" class="img-fluid" src="./assets/images/others/sign-up-2.png" />
+  </div>
+  <div class="m-l-auto col-md-5">
+    <nz-card>
+      <h2 class="m-t-20 ">Sign Up</h2>
+      <p class="m-b-30 ">Create your account to get access</p>
+      <form class="login-form" nz-form>
+        <nz-form-item>
+          <nz-form-label nzFor="userName" nzRequired>
+            UserName
+          </nz-form-label>
+          <nz-form-control>
+            <input formcontrolname="userName" id="userName" nz-input placeholder="Username" type="text" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="email" nzRequired>
+            Email
+          </nz-form-label>
+          <nz-form-control>
+            <input formcontrolname="email" id="email" nz-input placeholder="Email" type="text" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="password" nzRequired>
+            Password
+          </nz-form-label>
+          <nz-form-control>
+            <input formcontrolname="password" id="password" nz-input="" placeholder="Password" type="password" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="checkPassword" nzRequired>
+            Confirm Password
+          </nz-form-label>
+          <nz-form-control>
+            <input formcontrolname="checkPassword" id="checkPassword" nz-input placeholder="Confirm Password" />
+          </nz-form-control>
+        </nz-form-item>
+        <div class="d-flex align-items-center justify-content-between">
+          <nz-form-item>
+            <nz-form-control>
+              <label nz-checkbox formcontrolname="agree">I have read the <a>agreement</a></label>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <button class="login-form-button" [nzType]="'primary'" nz-button><span>Sign Up</span></button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </form>
+    </nz-card>
+  </div>
+</div>

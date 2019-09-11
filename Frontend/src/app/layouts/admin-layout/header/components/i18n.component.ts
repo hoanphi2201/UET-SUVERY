@@ -1,5 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { I18nService } from '@app/core';
 
 @Component({
   selector: 'header-i18n',
@@ -25,7 +26,7 @@ import { DOCUMENT } from '@angular/common';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class I18nComponent {
+export class I18nComponent implements OnInit {
   LANGS: any = {
     'zh-CN': {
       text: '简体中文',
@@ -38,10 +39,19 @@ export class I18nComponent {
     'en-US': {
       text: 'English',
       abbr: '🇬🇧'
+    },
+    'fr-FR': {
+      text: 'French',
+      abbr: '🇫🇷'
     }
   };
   langs = Object.keys(this.LANGS).map(code => {
     const item = this.LANGS[code];
     return { code, text: item.text, abbr: item.abbr };
   });
+  constructor(private i18nService: I18nService) {}
+  ngOnInit() {}
+  change(lang: string) {
+    this.i18nService.language = lang;
+  }
 }
