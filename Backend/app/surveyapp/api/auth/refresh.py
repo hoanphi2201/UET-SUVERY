@@ -1,5 +1,4 @@
 from flask_restplus import fields, Resource
-from flask import request
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -7,7 +6,6 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 from . import ns
-from surveyapp import services
 
 
 refresh_access_token_request = ns.model(
@@ -28,7 +26,7 @@ refresh_access_token_response = ns.model(
 )
 
 
-@ns.route('/refreshAccessToken')
+@ns.route('/refresh')
 class RefreshToken(Resource):
     @jwt_refresh_token_required
     @ns.expect(refresh_access_token_request)

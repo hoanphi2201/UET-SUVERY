@@ -1,14 +1,45 @@
 from flask_restplus import Resource, fields
 from . import ns
+from surveyapp import repositories, extensions
+from .survey import survey_model
+
+survey_answer_response = ns.model(
+    name="Survey Answer Response",
+    model={
+        'id': fields.Integer,
+        'json': fields.String(),
+        'user_id': fields.String(),
+        'created_at': fields.DateTime(),
+        'survey': fields.Nested(survey_model)
+    }
+)
+
+survey_answer_delete_response = ns.model(
+    name='Survey Answer Delete Response',
+    model={
+        'deleted': fields.Boolean()
+    }
+)
 
 
-@ns.route('/answer/<string:survey_answer_id>')
+@ns.route('/answers/<string:survey_answer_id>')
 class SurveyAnswer(Resource):
-    def get(self):
-        pass
+    @ns.marshal_with(survey_answer_response)
+    def get(self, survey_answer_id):
+        survey_answer = repositories.survey_answer.find_survey_answer_by_id(
+            survey_answer_id=survey_answer_id
+        )
+        if not survey_answer:
+            raise extensions.exceptions.NotFoundException(
+                message="Not found survey answer"
+            )
+        return survey_answer.to_dict()
 
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+    @ns.marshal_with(survey_answer_delete_response)
+    def delete(self, survey_answer_id):
+        repositories.survey_answer.delete_survey_answer(
+            survey_answer_id=survey_answer_id
+        )
+        return {
+            'deleted': True
+        }

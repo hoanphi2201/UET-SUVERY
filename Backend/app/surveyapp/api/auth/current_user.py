@@ -20,7 +20,7 @@ user_response = ns.model(
 )
 
 
-@ns.route('/getCurrentUser')
+@ns.route('/me')
 class CurrentUser(Resource):
     @jwt_required
     @ns.marshal_with(user_response)
