@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { extract } from './core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 
 const routes: Routes = [
   {
@@ -12,8 +13,29 @@ const routes: Routes = [
   },
   {
     path: '',
+    component: DefaultLayoutComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
+        loadChildren: './modules/dashboard/dashboard.module#DashboardModule',
+        data: { title: extract('Dashboard') }
+      }
+    ]
+  },
+  {
+    path: 'admin',
     component: AdminLayoutComponent,
     children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
       {
         path: 'dashboard',
         loadChildren: './modules/dashboard/dashboard.module#DashboardModule',

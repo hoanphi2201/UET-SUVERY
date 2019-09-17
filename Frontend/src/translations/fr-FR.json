@@ -1,4 +1,9 @@
 {
+  "menu.fullscreen": "Plein écran",
+  "menu.fullscreen.exit": "Quitter le mode plein écran",
+  "menu.lang": "La langue",
+  "menu.clear.local.storage": "Effacer le stockage local",
+
   "APP_NAME": "UET SUVERY",
   "About": "A propos",
   "Hello world !": "Bonjour le monde !",

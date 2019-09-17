@@ -6,7 +6,9 @@ import { RouterModule } from '@angular/router';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { SurveyCreatorComponent } from './components/survey-creator/survey-creator.component';
+import { SurveyComponent } from './components/survey/survey.component';
+import { PageComponent } from './components/page/page.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,7 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
     PerfectScrollbarModule,
     TranslateModule
   ],
-  declarations: [],
+  declarations: [SurveyComponent, SurveyCreatorComponent, PageComponent],
   exports: [
     CommonModule,
     FormsModule,
@@ -25,7 +27,10 @@ import { TranslateModule } from '@ngx-translate/core';
     RouterModule,
     NgZorroAntdModule,
     PerfectScrollbarModule,
-    TranslateModule
+    TranslateModule,
+    SurveyComponent,
+    SurveyCreatorComponent,
+    PageComponent
   ]
 })
 export class SharedModule {}
