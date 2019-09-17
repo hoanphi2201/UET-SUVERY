@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  app:
+    build: ./app
+    restart: on-failure
+    volumes:
+      - ./:/code
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: survey
+      MYSQL_USER: ductt
+      MYSQL_PASSWORD: 123456
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    ports:
+      - "3308:3306"
