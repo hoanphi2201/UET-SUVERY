@@ -30,7 +30,12 @@ def init_app(app, **kwargs):
 
 
 from .base import TimestampMixin
-from .user import User, association_table
+from .user import User
 from .survey_form import SurveyForm, SurveyModel
 from .survey_answer import SurveyAnswer
 from .revoked_token import RevokedToken
+from .role import Role, role_function_table
+from .function import Function
+# from .role_grant import RoleGrant
+# from .user_grant import UserGrant
+from .survey_link import SurveyLink

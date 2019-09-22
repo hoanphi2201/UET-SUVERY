@@ -7,7 +7,7 @@ survey_answer_response = ns.model(
     name="Survey Answer Response",
     model={
         'id': fields.Integer,
-        'json': fields.String(),
+        'answer': fields.String(),
         'user_id': fields.String(),
         'created_at': fields.DateTime(),
         'survey': fields.Nested(survey_model)

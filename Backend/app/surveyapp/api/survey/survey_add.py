@@ -37,26 +37,21 @@ class SurveyAdd(Resource):
         params={
             'size': 'page size',
             'offset': 'page number',
-            'q': 'key search by name',
-            'sortName': 'Sort field',
-            'sortOrder': 'Sort type',
+            'name': 'key search by name',
+            'order_by': 'Sort type',
             'status': 'all, draft, open or close',
-            'visible': 'public or protected'
         }
     )
-    @jwt_required
     @ns.marshal_with(survey_list_model)
     def get(self):
         owner_id = get_jwt_identity()
         params = request.args
         offset = params.get('offset', 1)
         size = params.get('size', 10)
-        q = params.get('q', "")
-        sort_name = params.get('sortName', 'created_at')
-        sort_order = params.get('sortOrder', 'desc')
+        name = params.get('name', "")
+        order_by = params.get('order_by', 'name')
         status = params.get('status', 'all')
-        visible = params.get('visible', 'all')
         result = services.survey.get_list(
-            owner_id, offset, size, q, sort_name, sort_order, status, visible
+            owner_id, offset, size, name, order_by, status
         )
         return result

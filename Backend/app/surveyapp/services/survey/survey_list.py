@@ -1,11 +1,9 @@
 from surveyapp import repositories, extensions
 
 
-def get_list(owner_id, offset, size, q, sort_name, sort_order, status, visible):
+def get_list(owner_id, offset, size, name, order_by, status):
     # validate number fields
     try:
-        if owner_id:
-            owner_id = int(owner_id)
         offset = int(offset)
         size = int(size)
     except ValueError:
@@ -13,14 +11,18 @@ def get_list(owner_id, offset, size, q, sort_name, sort_order, status, visible):
             message="Invalid params integer field"
         )
     # validate other fields
-    if sort_name not in ["name", "created_at"]:
+    if order_by not in ["name", "-name", "created_at", "-created_at"]:
         raise extensions.exceptions.BadRequestException(
-            message="Invalid params 'sortName'"
+            message="Invalid params 'order_by'"
         )
-    if sort_order not in ["desc", "asc"]:
-        raise extensions.exceptions.BadRequestException(
-            message="Invalid params 'sortOrder'"
-        )
+    else:
+        if order_by[0] == "-":
+            sort_order = "desc"
+            sort_name = order_by[1:]
+        else:
+            sort_order = "asc"
+            sort_name = order_by
+
     if status not in ["all", "draft", "open", "close"]:
         raise extensions.exceptions.BadRequestException(
             message="Invalid params 'status'"
@@ -30,17 +32,6 @@ def get_list(owner_id, offset, size, q, sort_name, sort_order, status, visible):
     else:
         status = [str.upper(status)]
 
-    if visible not in ["all", "public", "protected"]:
-        raise extensions.exceptions.BadRequestException(
-            message="Invalid params 'visible'"
-        )
-    if visible == "all":
-        visible = [True, False]
-    elif visible == "public":
-        visible = [True]
-    else:
-        visible = [False]
-
     return repositories.survey_form.get_list_survey(
-        owner_id, offset, size, q,sort_name, sort_order, status, visible
+        owner_id, offset, size, name, sort_name, sort_order, status
     )

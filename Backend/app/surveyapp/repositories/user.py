@@ -22,11 +22,8 @@ def find_user_by_username_or_email_ignore_case(username='', email=''):
     return user
 
 
-def find_user_by_id(user_id=None):
-    if user_id:
-        user = models.User.query.filter(
-            models.User.id == user_id
-        ).first()
-        return user or None
-    return None
-
+def find_user_by_id(user_id=''):
+    user = models.User.query.filter(
+        models.User.id == user_id
+    ).first()
+    return user or None

@@ -11,3 +11,4 @@ def init_app(app, **kwargs):
 
 from . import auth
 from . import survey
+from . import role

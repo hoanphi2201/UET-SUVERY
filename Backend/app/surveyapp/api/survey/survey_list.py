@@ -16,7 +16,7 @@ survey_list_model = ns.model(
     })
 
 
-@ns.route('/<int:owner_id>')
+@ns.route('/<string:owner_id>')
 class SurveyList(Resource):
     @ns.doc(
         params={

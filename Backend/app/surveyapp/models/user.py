@@ -1,5 +1,6 @@
 # coding=utf-8
 import logging
+from uuid import uuid4
 from sqlalchemy.orm import relationship
 from surveyapp.models import db, bcrypt, TimestampMixin
 
@@ -7,31 +8,25 @@ __author__ = 'Ductt'
 _logger = logging.getLogger(__name__)
 
 
-association_table = db.Table(
-    'user_survey_question',
-    db.metadata,
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('survey_form_id', db.Integer, db.ForeignKey('survey_form.id'))
-)
-
-
 class User(db.Model, TimestampMixin):
     __tablename__ = 'user'
 
     def __init__(self, **kwargs):
+        if not kwargs.get('id'):
+            setattr(self, 'id', uuid4().hex)
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.String(255), primary_key=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     username = db.Column(db.String(255), nullable=False, unique=True)
     fullname = db.Column(db.String(255), nullable=True)
     is_active = db.Column(db.Boolean(), default=True)
-    is_admin = db.Column(db.Boolean(), default=False)
     password_hash = db.Column(db.String(255))
-    image = db.Column(db.Text(), nullable=True)
+    link_survey = db.Column(db.ARRAY(db.String(255)), default=[])
     survey_form = relationship('SurveyForm', cascade="save-update, merge, delete")
-    survey_available = relationship('SurveyForm', secondary=association_table, back_populates="respondents")
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    role = relationship("Role")
 
     @property
     def password(self):
@@ -58,7 +53,7 @@ class User(db.Model, TimestampMixin):
             'username': self.username,
             'email': self.email,
             'fullname': self.fullname,
-            'ia_active': self.is_active,
-            'is_admin': self.is_admin,
-            'created_at': self.created_at
+            'is_active': self.is_active,
+            'created_at': self.created_at,
+            'role_id': self.role_id,
         }
