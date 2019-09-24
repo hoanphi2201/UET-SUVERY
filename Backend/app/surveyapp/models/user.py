@@ -24,6 +24,7 @@ class User(db.Model, TimestampMixin):
     is_active = db.Column(db.Boolean(), default=True)
     password_hash = db.Column(db.String(255))
     link_survey = db.Column(db.ARRAY(db.String(255)), default=[])
+    contact = db.Column(db.ARRAY(db.String(255)), default=[])
     survey_form = relationship('SurveyForm', cascade="save-update, merge, delete")
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     role = relationship("Role")
@@ -56,4 +57,5 @@ class User(db.Model, TimestampMixin):
             'is_active': self.is_active,
             'created_at': self.created_at,
             'role_id': self.role_id,
+            'contact': self.contact
         }

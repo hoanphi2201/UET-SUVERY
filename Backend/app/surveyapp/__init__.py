@@ -56,8 +56,8 @@ def create_app():
     app.config['JWT_SECRET_KEY'] = config.FLASK_APP_SECRET_KEY
     app.config['JWT_BLACKLIST_ENABLED'] = True
     app.config['JWT_TOKEN_LOCATION'] = ('headers', 'json')
-    app.config['JWT_JSON_KEY'] = 'accessToken'
-    app.config['JWT_REFRESH_JSON_KEY'] = 'refreshToken'
+    app.config['JWT_JSON_KEY'] = 'access_token'
+    app.config['JWT_REFRESH_JSON_KEY'] = 'refresh_token'
     app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
     app.config['JWT_ERROR_MESSAGE_KEY'] = 'message'
     app.config['CORS_SUPPORTS_CREDENTIALS'] = True

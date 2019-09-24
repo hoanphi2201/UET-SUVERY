@@ -2,6 +2,8 @@ from flask_restplus import Resource, fields, Namespace
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import request
 from surveyapp import repositories, extensions, services
+from surveyapp.helpers.decorators import function_required
+from surveyapp.constants.function import VIEW_SURVEY_ME
 from . import ns
 
 survey_answer_add_request = ns.model(
@@ -50,10 +52,17 @@ class SurveyAnswerAdd(Resource):
             raise extensions.exceptions.NotFoundException(
                 message="Not found survey"
             )
-        data.append({
-            "user_id": get_jwt_identity(),
-            "survey_form_id": survey_id
-        })
+        user_id = get_jwt_identity()
+        if not user_id or user_id not in survey.invited_user_id:
+            data.append({
+                "user_id": None,
+                "survey_form_id": survey_id
+            })
+        else:
+            data.append({
+                "user_id": user_id,
+                "survey_form_id": survey_id
+            })
         repositories.survey_answer.add_survey_answer(**data)
         return {
             "created": True
@@ -67,6 +76,8 @@ class SurveyAnswerAdd(Resource):
         }
     )
     @ns.marshal_with(survey_answer_list_response)
+    @jwt_required
+    @function_required(VIEW_SURVEY_ME)
     def get(self, survey_id):
         params = request.args
         offset = params.get('offset', 1)

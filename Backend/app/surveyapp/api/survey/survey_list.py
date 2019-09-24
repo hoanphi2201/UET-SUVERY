@@ -1,5 +1,6 @@
 from flask_restplus import Resource, fields
 from flask import request
+from flask_jwt_extended import jwt_required
 from surveyapp import models, services
 from . import ns
 
@@ -30,16 +31,18 @@ class SurveyList(Resource):
         }
     )
     @ns.marshal_with(survey_list_model)
+    @jwt_required
     def get(self, owner_id):
-        params = request.args
-        offset = params.get('offset', 1)
-        size = params.get('size', 10)
-        q = params.get('q', "")
-        sort_name = params.get('sortName', 'created_at')
-        sort_order = params.get('sortOrder', 'desc')
-        status = params.get('status', 'all')
-        visible = params.get('visible', 'all')
-        result = services.survey.get_list(
-            owner_id, offset, size, q, sort_name, sort_order, status, visible
-        )
-        return result
+        pass
+        # params = request.args
+        # offset = params.get('offset', 1)
+        # size = params.get('size', 10)
+        # q = params.get('q', "")
+        # sort_name = params.get('sortName', 'created_at')
+        # sort_order = params.get('sortOrder', 'desc')
+        # status = params.get('status', 'all')
+        # visible = params.get('visible', 'all')
+        # result = services.survey.get_list(
+        #     owner_id, offset, size, q, sort_name, sort_order, status, visible
+        # )
+        # return result

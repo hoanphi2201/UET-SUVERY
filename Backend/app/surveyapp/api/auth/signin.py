@@ -20,8 +20,8 @@ sign_in_request = ns.model(
 sign_in_response = ns.model(
     name='Sign in response',
     model={
-        'accessToken': fields.String(),
-        'refreshToken': fields.String()
+        'access_token': fields.String(),
+        'refresh_token': fields.String()
     }
 )
 
@@ -36,6 +36,6 @@ class SignIn(Resource):
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
         return {
-            'accessToken': access_token,
-            'refreshToken': refresh_token
+            'access_token': access_token,
+            'refresh_token': refresh_token
         }

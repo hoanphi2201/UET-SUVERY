@@ -15,7 +15,8 @@ user_response = ns.model(
         'fullname': fields.String(),
         'is_active': fields.Boolean(),
         'created_at': fields.DateTime(),
-        'role_id': fields.String()
+        'role_id': fields.String(),
+        'contact': fields.List(fields.String())
     }
 )
 

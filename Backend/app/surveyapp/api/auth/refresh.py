@@ -11,7 +11,7 @@ from . import ns
 refresh_access_token_request = ns.model(
     name='Refresh token request',
     model={
-        'refreshToken': fields.String(
+        'refresh_token': fields.String(
             required=True
         )
     }
@@ -20,8 +20,8 @@ refresh_access_token_request = ns.model(
 refresh_access_token_response = ns.model(
     name='Refresh token response',
     model={
-        'newAccessToken': fields.String(),
-        'newRefreshToken': fields.String()
+        'new_access_token': fields.String(),
+        'new_refresh_token': fields.String()
     }
 )
 
@@ -36,6 +36,6 @@ class RefreshToken(Resource):
         access_token = create_access_token(identity=current_user_id)
         refresh_token = create_refresh_token(identity=current_user_id)
         return {
-            'newAccessToken': access_token,
-            'newRefreshToken': refresh_token
+            'new_access_token': access_token,
+            'new_refresh_token': refresh_token
         }
