@@ -25,7 +25,7 @@
 
 ### Console commands
 
-- To run application: `flask run`
+- To run application: `python -m flask run`
 
 ### Database migration
 
