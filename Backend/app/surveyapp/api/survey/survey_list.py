@@ -12,8 +12,8 @@ survey_model = ns.model(
 survey_list_model = ns.model(
     name='Survey List Model',
     model={
-        'total': fields.Integer,
-        'data': fields.List(fields.Nested(survey_model))
+        'totalItems': fields.Integer,
+        'results': fields.List(fields.Nested(survey_model))
     })
 
 

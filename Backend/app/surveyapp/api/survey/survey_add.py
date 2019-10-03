@@ -27,35 +27,33 @@ survey_add_response = ns.model(
 class SurveyAdd(Resource):
     @ns.expect(survey_add_request, validate=True)
     @ns.marshal_with(survey_add_response)
-    @jwt_required
-    @function_required(ADD_SURVEY)
+    # @jwt_required
+    # @function_required(ADD_SURVEY)
     def post(self):
-        owner_id = get_jwt_identity()
-        services.survey.survey_add(owner_id=owner_id, **request.json)
+        # owner_id = get_jwt_identity()
+        services.survey.survey_add(owner_id='c03e6b17ac014779959937fa93331925', **request.json)
         return {
             'created': True
         }
 
     @ns.doc(
         params={
-            'size': 'page size',
-            'offset': 'page number',
-            'name': 'key search by name',
-            'order_by': 'Sort type',
-            'status': 'all, draft, open or close',
+            'pageSize': 'page size',
+            'page': 'page number',
+            'q': 'key search by name',
+            'orderBy': 'Sort type',
         }
     )
-    @jwt_required
+    # @jwt_required
     @ns.marshal_with(survey_list_model)
     def get(self):
-        owner_id = get_jwt_identity()
+        owner_id = 'c03e6b17ac014779959937fa93331925' or get_jwt_identity()
         params = request.args
-        offset = params.get('offset', 1)
-        size = params.get('size', 10)
-        name = params.get('name', "")
-        order_by = params.get('order_by', 'name')
-        status = params.get('status', 'all')
+        page = params.get('page', 1)
+        page_size = params.get('pageSize', 10)
+        q = params.get('q', "")
+        order_by = params.get('orderBy', 'name')
         result = services.survey.get_list(
-            owner_id, offset, size, name, order_by, status
+            owner_id, page, page_size, q, order_by
         )
         return result

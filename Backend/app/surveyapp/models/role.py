@@ -1,6 +1,7 @@
 # coding=utf-8
 import logging
 from uuid import uuid4
+from datetime import datetime
 from sqlalchemy.orm import relationship
 from surveyapp.models import db, TimestampMixin
 
@@ -26,4 +27,24 @@ class Role(db.Model, TimestampMixin):
     name = db.Column(db.String(50), nullable=False, unique=True)
     description = db.Column(db.Text(), nullable=True)
     function = relationship("Function", secondary=role_function_table)
-    # role_grant = relationship("RoleGrant")
+
+    def get_permission(self):
+        results = []
+        if len(self.function) > 0:
+            for f in self.function:
+                results.append(f"{f.name}")
+        return {
+            'key': self.name,
+            'permissions': results
+        }
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'functions': [f.id for f in self.function],
+            'created_at': self.created_at.__str__(),
+            'updated_at': self.updated_at.__str__()
+        }
+

@@ -25,8 +25,15 @@ def find_function_by_id(f_id):
     return function
 
 
-def find_role_by_id(user_id=''):
-    user = models.User.query.filter(
-        models.User.id == user_id
+def find_role_by_id(role_id=''):
+    role = models.Role.query.filter(
+        models.Role.id == role_id
     ).first()
-    return user or None
+    return role or None
+
+
+def delete_role_by_id(role_id):
+    role = find_role_by_id(role_id=role_id)
+    if role:
+        models.db.session.delete(role)
+        models.db.session.commit()

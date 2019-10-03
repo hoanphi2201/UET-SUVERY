@@ -1,6 +1,7 @@
 # coding=utf-8
 import logging
 import enum
+import json
 from uuid import uuid4
 from flask_restplus import fields
 from sqlalchemy.orm import relationship
@@ -25,9 +26,9 @@ class SurveyForm(db.Model, TimestampMixin):
         self.update_attr(**kwargs)
 
     id = db.Column(db.String(255), primary_key=True)
-    name = db.Column(db.String(255), nullable=False, unique=True)
+    name = db.Column(db.Text, nullable=False)
     config = db.Column(db.JSON())
-    status = db.Column(db.Enum(Status), default=Status.DRAFT)
+    status = db.Column(db.Enum(Status), default=Status.OPEN)
     owner_id = db.Column(db.String(255), db.ForeignKey('user.id'))
     invited_user_id = db.Column(db.ARRAY(db.String(255)), default=[])
     survey_link = relationship("SurveyLink", cascade="save-update, merge, delete")
@@ -40,7 +41,7 @@ class SurveyForm(db.Model, TimestampMixin):
         return {
             'id': self.id,
             'name': self.name,
-            'config': self.config,
+            'config': json.dumps(self.config),
             'status': self.status.value,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
@@ -64,11 +65,9 @@ class SurveyModel:
     survey_add_model = {
         'name': fields.String(required=True),
         'config': fields.String(required=True),
-        'status': fields.String(enum=Status._member_names_),
     }
 
     survey_edit_model = {
         'name': fields.String(),
         'config': fields.String(),
-        'status': fields.String(enum=Status._member_names_),
     }

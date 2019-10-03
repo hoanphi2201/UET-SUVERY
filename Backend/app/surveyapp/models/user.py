@@ -56,6 +56,6 @@ class User(db.Model, TimestampMixin):
             'fullname': self.fullname,
             'is_active': self.is_active,
             'created_at': self.created_at,
-            'role_id': self.role_id,
+            'roles': self.role.get_permission(),
             'contact': self.contact
         }

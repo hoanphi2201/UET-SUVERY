@@ -6,6 +6,7 @@ from flask_jwt_extended import (
 from surveyapp import models, extensions
 from . import ns
 
+
 user_response = ns.model(
     name='User response',
     model={
@@ -15,7 +16,10 @@ user_response = ns.model(
         'fullname': fields.String(),
         'is_active': fields.Boolean(),
         'created_at': fields.DateTime(),
-        'role_id': fields.String(),
+        'role': fields.Nested(model=ns.model('role_model_simple', {
+            'key': fields.String(),
+            'permission': fields.List(fields.String())
+        })),
         'contact': fields.List(fields.String())
     }
 )

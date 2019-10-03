@@ -7,6 +7,7 @@ from surveyapp import services, models, repositories, extensions
 from surveyapp.helpers.decorators import function_required
 from surveyapp.constants.function import EDIT_SURVEY_ME, DELETE_SURVEY_ME, VIEW_SURVEY_ME
 from . import ns
+import json
 
 survey_model = ns.model(
     name='Survey Model',
@@ -36,8 +37,8 @@ survey_delete_response = ns.model(
 @ns.route('/<string:survey_id>')
 class Survey(Resource):
     @ns.marshal_with(survey_model)
-    @jwt_required
-    @function_required(VIEW_SURVEY_ME)
+    # @jwt_required
+    # @function_required(VIEW_SURVEY_ME)
     def get(self, survey_id):
         survey = repositories.survey_form.find_survey_by_id(survey_id=survey_id)
         if not survey:

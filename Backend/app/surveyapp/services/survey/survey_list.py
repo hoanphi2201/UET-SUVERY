@@ -1,17 +1,17 @@
 from surveyapp import repositories, extensions
 
 
-def get_list(owner_id, offset, size, name, order_by, status):
+def get_list(owner_id, page, page_size, q, order_by):
     # validate number fields
     try:
-        offset = int(offset)
-        size = int(size)
+        page = int(page)
+        page_size = int(page_size)
     except ValueError:
         raise extensions.exceptions.BadRequestException(
             message="Invalid params integer field"
         )
     # validate other fields
-    if order_by not in ["name", "-name", "created_at", "-created_at"]:
+    if order_by not in ["name", "-name", "created_at", "-created_at", "updated_at", "-updated_at"]:
         raise extensions.exceptions.BadRequestException(
             message="Invalid params 'order_by'"
         )
@@ -22,16 +22,6 @@ def get_list(owner_id, offset, size, name, order_by, status):
         else:
             sort_order = "asc"
             sort_name = order_by
-
-    if status not in ["all", "draft", "open", "close"]:
-        raise extensions.exceptions.BadRequestException(
-            message="Invalid params 'status'"
-        )
-    if status == "all":
-        status = ["DRAFT", "OPEN", "CLOSE"]
-    else:
-        status = [str.upper(status)]
-
     return repositories.survey_form.get_list_survey(
-        owner_id, offset, size, name, sort_name, sort_order, status
+        owner_id, page, page_size, q, sort_name, sort_order
     )

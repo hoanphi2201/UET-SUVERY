@@ -3,6 +3,7 @@ import logging
 import flask
 import re
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 __author__ = 'Ductt'
 _logger = logging.getLogger(__name__)
@@ -26,6 +27,7 @@ def _after_request(response):
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
     response.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    response.headers['Access-Control-Expose-Headers'] = '*'
 
     return response
 
@@ -50,12 +52,13 @@ def create_app():
         instance_relative_config=True,
         instance_path=os.path.join(config.ROOT_DIR, 'instance')
     )
+    app.after_request(_after_request)
     app.json_encoder = helpers.JSONEncoder
     load_app_config(app)
-    app.after_request(_after_request)
     app.config['JWT_SECRET_KEY'] = config.FLASK_APP_SECRET_KEY
     app.config['JWT_BLACKLIST_ENABLED'] = True
-    app.config['JWT_TOKEN_LOCATION'] = ('headers', 'json')
+    app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers', 'json']
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = False
     app.config['JWT_JSON_KEY'] = 'access_token'
     app.config['JWT_REFRESH_JSON_KEY'] = 'refresh_token'
     app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']

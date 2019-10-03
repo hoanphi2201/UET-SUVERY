@@ -2,13 +2,11 @@ from surveyapp import models
 from sqlalchemy.exc import SQLAlchemyError
 
 
-def get_list_survey(owner_id, offset, size, q, sort_name, sort_order, status):
+def get_list_survey(owner_id, page, page_size, q, sort_name, sort_order):
     list_all = models.db.session.query(
         models.SurveyForm
     ).filter(
         models.SurveyForm.name.ilike('%{}%'.format(q))
-    ).filter(
-        models.SurveyForm.status.in_(status)
     )
     if owner_id:
         list_all = list_all.filter(
@@ -18,18 +16,18 @@ def get_list_survey(owner_id, offset, size, q, sort_name, sort_order, status):
     if sort_order == 'desc':
         results = list_all \
             .order_by(getattr(models.SurveyForm, sort_name).desc()) \
-            .limit(size) \
-            .offset((offset - 1) * size) \
+            .limit(page_size) \
+            .offset((page - 1) * page_size) \
             .all()
     else:
         results = list_all \
             .order_by(getattr(models.SurveyForm, sort_name).asc()) \
-            .limit(size) \
-            .offset((offset - 1) * size) \
+            .limit(page_size) \
+            .offset((page - 1) * page_size) \
             .all()
     return {
-        'total': total,
-        'data': [x.to_dict() for x in results]
+        'totalItems': total,
+        'results': [x.to_dict() for x in results]
     }
 
 
