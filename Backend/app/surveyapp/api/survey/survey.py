@@ -5,7 +5,6 @@ from flask_jwt_extended import (
 from flask import request
 from surveyapp import services, models, repositories, extensions
 from surveyapp.helpers.decorators import function_required
-from surveyapp.constants.function import EDIT_SURVEY_ME, DELETE_SURVEY_ME, VIEW_SURVEY_ME
 from . import ns
 import json
 
@@ -50,7 +49,6 @@ class Survey(Resource):
     @ns.expect(survey_edit_request, validate=True)
     @ns.marshal_with(survey_edit_response)
     @jwt_required
-    @function_required(EDIT_SURVEY_ME)
     def put(self, survey_id):
         data = request.json
         services.survey.survey_edit(survey_id, **data)
@@ -59,8 +57,6 @@ class Survey(Resource):
         }
 
     @ns.marshal_with(survey_delete_response)
-    @jwt_required
-    @function_required(DELETE_SURVEY_ME)
     def delete(self, survey_id):
         repositories.survey_form.delete_survey(survey_id=survey_id)
         return {

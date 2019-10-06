@@ -44,7 +44,7 @@ class Role(db.Model, TimestampMixin):
             'name': self.name,
             'description': self.description,
             'functions': [f.id for f in self.function],
-            'created_at': self.created_at.__str__(),
-            'updated_at': self.updated_at.__str__()
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
         }
 

@@ -3,7 +3,6 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import request
 from surveyapp import repositories, extensions, services
 from surveyapp.helpers.decorators import function_required
-from surveyapp.constants.function import VIEW_SURVEY_ME
 from . import ns
 
 survey_answer_add_request = ns.model(
@@ -77,7 +76,6 @@ class SurveyAnswerAdd(Resource):
     )
     @ns.marshal_with(survey_answer_list_response)
     @jwt_required
-    @function_required(VIEW_SURVEY_ME)
     def get(self, survey_id):
         params = request.args
         offset = params.get('offset', 1)

@@ -18,7 +18,6 @@ def signup(username='', email='', password='', **kwargs):
         username=username,
         email=email,
         password=password,
-        role_id=2,
         **kwargs
     )
     if not user_created:

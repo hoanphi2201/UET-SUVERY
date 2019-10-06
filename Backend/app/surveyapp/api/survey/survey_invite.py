@@ -3,7 +3,6 @@ from flask import request
 from flask_jwt_extended import jwt_required
 from surveyapp import repositories, extensions
 from surveyapp.helpers.decorators import function_required
-from surveyapp.constants.function import INVITE_SURVEY_ME
 from . import ns
 
 
@@ -27,7 +26,6 @@ class SurveyInvite(Resource):
     @ns.expect(survey_invite_request, validate=True)
     @ns.marshal_with(survey_invite_response)
     @jwt_required
-    @function_required(INVITE_SURVEY_ME)
     def post(self, survey_id):
         survey = repositories.survey_form.find_survey_by_id(survey_id)
         if not survey:

@@ -3,7 +3,7 @@ from flask import request
 from surveyapp import services
 from flask_jwt_extended import jwt_required
 from surveyapp.helpers.decorators import function_required
-from surveyapp.constants.function import ADD_ROLE, VIEW_ALL_ROLE
+from surveyapp.constants.function import ADD_ROLE
 from surveyapp import extensions, models
 from .role import role_model
 from . import ns
@@ -57,6 +57,7 @@ class RoleAdd(Resource):
             'orderBy': 'Sort type',
         }
     )
+    @ns.marshal_with(role_list_model)
     def get(self):
         params = request.args
         page = params.get('page', 1)

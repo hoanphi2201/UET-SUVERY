@@ -30,8 +30,9 @@ class SurveyForm(db.Model, TimestampMixin):
     config = db.Column(db.JSON())
     status = db.Column(db.Enum(Status), default=Status.OPEN)
     owner_id = db.Column(db.String(255), db.ForeignKey('user.id'))
-    invited_user_id = db.Column(db.ARRAY(db.String(255)), default=[])
-    survey_link = relationship("SurveyLink", cascade="save-update, merge, delete")
+    link_collection = relationship("LinkCollection", cascade="save-update, merge, delete")
+    invite_collection = relationship("InviteCollection", cascade="save-update, merge, delete")
+    email_collection = relationship("EmailCollection", cascade="save-update, merge, delete")
 
     def update_attr(self, **kwargs):
         for k, v in kwargs.items():
@@ -46,7 +47,6 @@ class SurveyForm(db.Model, TimestampMixin):
             'created_at': self.created_at,
             'updated_at': self.updated_at,
             'owner_id': self.owner_id,
-            'invited_user_id': self.invited_user_id
         }
 
 
@@ -59,7 +59,6 @@ class SurveyModel:
         'created_at': fields.DateTime(),
         'updated_at': fields.DateTime(),
         'owner_id': fields.String(),
-        'invited_user_id': fields.List(fields.String(255)),
     }
 
     survey_add_model = {

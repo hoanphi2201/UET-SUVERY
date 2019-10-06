@@ -2,7 +2,6 @@ from flask_restplus import Resource, fields
 from flask_jwt_extended import jwt_required
 from surveyapp import repositories, extensions
 from surveyapp.helpers.decorators import function_required
-from surveyapp.constants.function import SUBSCRIBE_LINK_SURVEY_ME
 from .survey import survey_model
 from . import ns
 
@@ -18,7 +17,6 @@ survey_link_subscribe_response = ns.model(
 class SurveyLink(Resource):
     @ns.marshal_with(survey_link_subscribe_response)
     @jwt_required
-    @function_required(SUBSCRIBE_LINK_SURVEY_ME)
     def get(self, survey_id):
         survey = repositories.survey_form.find_survey_by_id(survey_id=survey_id)
         if not survey:

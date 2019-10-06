@@ -1,7 +1,7 @@
 from flask_restplus import Resource, fields
 from flask_jwt_extended import jwt_required
 from surveyapp.helpers.decorators import function_required
-from surveyapp.constants.function import EDIT_ROLE, DELETE_ROLE, VIEW_ALL_ROLE
+from surveyapp.constants.function import EDIT_ROLE, DELETE_ROLE
 from surveyapp import models, extensions, repositories
 from . import ns
 

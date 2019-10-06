@@ -24,9 +24,10 @@ class User(db.Model, TimestampMixin):
     is_active = db.Column(db.Boolean(), default=True)
     password_hash = db.Column(db.String(255))
     link_survey = db.Column(db.ARRAY(db.String(255)), default=[])
+    other_function = db.Column(db.ARRAY(db.Integer), default=[])
     contact = db.Column(db.ARRAY(db.String(255)), default=[])
     survey_form = relationship('SurveyForm', cascade="save-update, merge, delete")
-    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id',  ondelete='SET NULL'), nullable=True)
     role = relationship("Role")
 
     @property
@@ -56,6 +57,19 @@ class User(db.Model, TimestampMixin):
             'fullname': self.fullname,
             'is_active': self.is_active,
             'created_at': self.created_at,
-            'roles': self.role.get_permission(),
+            'roles': self.role.get_permission() if self.role else None,
             'contact': self.contact
+        }
+
+    def to_dict_simple(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'fullname': self.fullname,
+            'role_id': self.role_id,
+            'role_name': self.role.name if self.role else None,
+            'functions': [],
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat(),
         }

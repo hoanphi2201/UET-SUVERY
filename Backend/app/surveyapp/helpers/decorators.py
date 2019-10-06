@@ -3,11 +3,10 @@ from surveyapp import repositories, extensions
 from surveyapp.constants.function import *
 from functools import wraps
 
-function_no_deep = [ADD_USER, EDIT_USER, VIEW_ALL_USER, DELETE_USER, ADD_SURVEY, ADD_ROLE, EDIT_ROLE, VIEW_ALL_ROLE,
+function_no_deep = [ADD_USER, EDIT_USER, VIEW_USER, DELETE_USER, ADD_ROLE, EDIT_ROLE, VIEW_ROLE,
                     DELETE_ROLE]
 
-function_deep_survey_form_id = [VIEW_SURVEY_ME, EDIT_SURVEY_ME, DELETE_SURVEY_ME, STATISTIC_SURVEY_ME, INVITE_SURVEY_ME,
-                                SUBSCRIBE_LINK_SURVEY_ME]
+function_deep_survey_form_id = [STATISTIC_SURVEY, INVITE_SURVEY]
 
 
 def permission_denied():

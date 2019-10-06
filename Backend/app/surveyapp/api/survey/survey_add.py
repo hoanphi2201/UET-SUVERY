@@ -6,7 +6,6 @@ from flask_jwt_extended import (
 from flask import request
 from surveyapp import models, services
 from surveyapp.helpers.decorators import function_required
-from surveyapp.constants.function import ADD_SURVEY
 from .survey_list import survey_list_model
 from . import ns
 
@@ -18,7 +17,7 @@ survey_add_request = ns.model(
 survey_add_response = ns.model(
     name='Survey Add Response',
     model={
-        'created': fields.Boolean()
+        'id': fields.String()
     }
 )
 
@@ -31,9 +30,9 @@ class SurveyAdd(Resource):
     # @function_required(ADD_SURVEY)
     def post(self):
         # owner_id = get_jwt_identity()
-        services.survey.survey_add(owner_id='c03e6b17ac014779959937fa93331925', **request.json)
+        new_survey = services.survey.survey_add(owner_id='f641730a08b04db0b450db2c9156c19e', **request.json)
         return {
-            'created': True
+            'id': new_survey.id
         }
 
     @ns.doc(
@@ -47,7 +46,7 @@ class SurveyAdd(Resource):
     # @jwt_required
     @ns.marshal_with(survey_list_model)
     def get(self):
-        owner_id = 'c03e6b17ac014779959937fa93331925' or get_jwt_identity()
+        owner_id = 'f641730a08b04db0b450db2c9156c19e' or get_jwt_identity()
         params = request.args
         page = params.get('page', 1)
         page_size = params.get('pageSize', 10)

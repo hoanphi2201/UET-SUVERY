@@ -27,3 +27,10 @@ def find_user_by_id(user_id=''):
         models.User.id == user_id
     ).first()
     return user or None
+
+
+def delete_user_by_id(user_id):
+    user = find_user_by_id(user_id)
+    if user:
+        models.db.session.delete(user)
+        models.db.session.commit()
