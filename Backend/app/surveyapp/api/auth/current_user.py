@@ -7,7 +7,7 @@ from surveyapp import models
 from . import ns
 
 user_response = ns.model(
-    name='User response',
+    name=' Current user response',
     model={
         'id': fields.Integer(),
         'username': fields.String(),
