@@ -5,6 +5,7 @@ from flask_jwt_extended import (
 )
 from flask import request
 from surveyapp import models, services
+from surveyapp.helpers.decorators import function_required
 from .survey_list import survey_list_model
 from . import ns
 
@@ -16,47 +17,42 @@ survey_add_request = ns.model(
 survey_add_response = ns.model(
     name='Survey Add Response',
     model={
-        'created': fields.Boolean()
+        'id': fields.String()
     }
 )
 
 
 @ns.route('/')
 class SurveyAdd(Resource):
-    @jwt_required
     @ns.expect(survey_add_request, validate=True)
     @ns.marshal_with(survey_add_response)
+    # @jwt_required
+    # @function_required(ADD_SURVEY)
     def post(self):
-        owner_id = get_jwt_identity()
-        services.survey.survey_add(owner_id=owner_id, **request.json)
+        # owner_id = get_jwt_identity()
+        new_survey = services.survey.survey_add(owner_id='f641730a08b04db0b450db2c9156c19e', **request.json)
         return {
-            'created': True
+            'id': new_survey.id
         }
 
     @ns.doc(
         params={
-            'size': 'page size',
-            'offset': 'page number',
+            'pageSize': 'page size',
+            'page': 'page number',
             'q': 'key search by name',
-            'sortName': 'Sort field',
-            'sortOrder': 'Sort type',
-            'status': 'all, draft, open or close',
-            'visible': 'public or protected'
+            'orderBy': 'Sort type',
         }
     )
-    @jwt_required
+    # @jwt_required
     @ns.marshal_with(survey_list_model)
     def get(self):
-        owner_id = get_jwt_identity()
+        owner_id = 'f641730a08b04db0b450db2c9156c19e' or get_jwt_identity()
         params = request.args
-        offset = params.get('offset', 1)
-        size = params.get('size', 10)
+        page = params.get('page', 1)
+        page_size = params.get('pageSize', 10)
         q = params.get('q', "")
-        sort_name = params.get('sortName', 'created_at')
-        sort_order = params.get('sortOrder', 'desc')
-        status = params.get('status', 'all')
-        visible = params.get('visible', 'all')
+        order_by = params.get('orderBy', 'name')
         result = services.survey.get_list(
-            owner_id, offset, size, q, sort_name, sort_order, status, visible
+            owner_id, page, page_size, q, order_by
         )
         return result

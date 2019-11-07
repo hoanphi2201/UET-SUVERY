@@ -3,19 +3,24 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt_identity
 )
-from surveyapp import models
+from surveyapp import models, extensions
 from . import ns
+
 
 user_response = ns.model(
     name=' Current user response',
     model={
-        'id': fields.Integer(),
+        'id': fields.String(),
         'username': fields.String(),
         'email': fields.String(),
         'fullname': fields.String(),
-        'ia_active': fields.Boolean(),
-        'is_admin': fields.Boolean(),
-        'created_at': fields.DateTime()
+        'is_active': fields.Boolean(),
+        'created_at': fields.DateTime(),
+        'role': fields.Nested(model=ns.model('role_model_simple', {
+            'key': fields.String(),
+            'permission': fields.List(fields.String())
+        })),
+        'contact': fields.List(fields.String())
     }
 )
 
@@ -28,6 +33,8 @@ class CurrentUser(Resource):
         user_id = get_jwt_identity()
         user = models.User.query.filter(models.User.id == user_id).first()
         if not user:
-            return None
+            raise extensions.exceptions.BadRequestException(
+                message="Invalid"
+            )
         return user.to_dict()
 

@@ -2,12 +2,14 @@ from flask_restplus import Resource, fields, Namespace
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import request
 from surveyapp import repositories, extensions, services
+from surveyapp.helpers.decorators import function_required
 from . import ns
 
 survey_answer_add_request = ns.model(
     name='Survey Answer Add Request',
     model={
-        'json': fields.String(required=True),
+        'link': fields.String(required=True),
+        'answer': fields.String(required=True),
     }
 )
 
@@ -21,11 +23,11 @@ survey_answer_add_response = ns.model(
 survey_answer_simple = ns.model(
     name='Survey Answer Simple',
     model={
-        'id': fields.Integer,
-        'json': fields.String(),
-        'user_id': fields.Integer,
+        'id': fields.String(),
+        'answer': fields.String(),
+        'user_id': fields.String(),
         'created_at': fields.DateTime(),
-        'survey_form_id': fields.Integer
+        'survey_form_id': fields.String()
     }
 )
 
@@ -38,30 +40,29 @@ survey_answer_list_response = ns.model(
 )
 
 
-@ns.route('/answers/<int:survey_form_id>')
+@ns.route('/<string:survey_id>/answers')
 class SurveyAnswerAdd(Resource):
     @ns.expect(survey_answer_add_request, validate=True)
     @ns.marshal_with(survey_answer_add_response)
-    def post(self, survey_form_id):
+    def post(self, survey_id):
         data = request.json
-        survey = repositories.survey_form.find_survey_by_id(survey_form_id)
+        survey = repositories.survey_form.find_survey_by_id(survey_id)
         if not survey:
             raise extensions.exceptions.NotFoundException(
                 message="Not found survey"
             )
-        if survey.is_visible:
-            data.append({"user_id": None})
+        user_id = get_jwt_identity()
+        if not user_id or user_id not in survey.invited_user_id:
+            data.append({
+                "user_id": None,
+                "survey_form_id": survey_id
+            })
         else:
-            user_id = get_jwt_identity()
-            allow_id = [x.id for x in survey.respondents]
-            if user_id not in allow_id:
-                raise extensions.exceptions.ForbiddenException(
-                    message="Permission denied"
-                )
-            else:
-                data.append({"user_id": user_id})
-        data.append({"survey_form_id": survey_form_id})
-        # call service
+            data.append({
+                "user_id": user_id,
+                "survey_form_id": survey_id
+            })
+        repositories.survey_answer.add_survey_answer(**data)
         return {
             "created": True
         }
@@ -70,16 +71,17 @@ class SurveyAnswerAdd(Resource):
         params={
             'size': 'page size',
             'offset': 'page number',
-            'sortOrder': 'Sort type',
+            'order_by': 'Sort type',
         }
     )
     @ns.marshal_with(survey_answer_list_response)
-    def get(self, survey_form_id):
+    @jwt_required
+    def get(self, survey_id):
         params = request.args
         offset = params.get('offset', 1)
         size = params.get('size', 10)
-        sort_order = params.get('sortOrder', 'desc')
+        order_by = params.get('order_by', 'created_at')
         result = services.survey.get_list_answer(
-            survey_form_id, offset, size, sort_order
+            survey_id, offset, size, order_by
         )
         return result
