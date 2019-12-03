@@ -1,0 +1,198 @@
+@import "../../../../../styles/variables.scss";
+::ng-deep .sv_header {
+  background-color: #fff;
+  padding-left: 0px !important;
+  h3 {
+    font-weight: 700 !important;
+    color: $theme-color;
+  }
+}
+.wrapper {
+  text-align: center;
+}
+.error-message-wrapper {
+  width: 550px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -250px 0 0 -250px;
+  .error-message-container {
+    padding: 32px;
+    background-color: #fff;
+    border: 1px solid #d0d2d3;
+    border-radius: 2px;
+  }
+  p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
+  p {
+    color: #6b787f;
+    line-height: 1.4;
+    font-size: 15px;
+  }
+  .error-logo {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    margin: 0;
+    img {
+      display: block;
+      margin: 0;
+      width: 200px;
+    }
+  }
+  h3 {
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+  .links {
+    margin: 0;
+    margin-top: 32px;
+    font-size: 13px;
+    color: #d0d2d3;
+  }
+}
+.survey-page {
+  margin-top: 40px;
+  .survey-title {
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    text-decoration: none;
+    color: $theme-color;
+    line-height: 1.25;
+  }
+  .title-text {
+    word-wrap: break-word;
+    white-space: normal;
+    display: block;
+  }
+  .description-text {
+    word-wrap: break-word;
+    white-space: normal;
+    display: block;
+    color: #6d7072;
+  }
+  .survey-footer {
+    text-align: center;
+    padding: 0 0 40px 0;
+    margin-bottom: 40px;
+  }
+  .survey-footer-title {
+    margin: 0;
+    font-size: 12px;
+    line-height: 15px;
+    &:before {
+      content: " ";
+      width: 149px;
+      display: block;
+      margin: 0 auto 18.5px auto;
+    }
+  }
+  .footer-brand-name {
+    font-size: 15px;
+    font-weight: bold;
+    display: block;
+  }
+  .responsive-logo {
+    margin: 2px 0;
+    height: 35px;
+  }
+  .survey-footer-link {
+    width: 207px;
+    margin: 0 auto;
+    text-decoration: underline;
+    text-transform: none;
+    color: #333e48;
+  }
+  .survey-footer .survey-footer-privacy-link-container,
+  .v3theme .survey-page .survey-footer .report-problem-trigger-spacing {
+    display: inline-block;
+    padding-top: 80px;
+  }
+  .survey-footer-privacy-link {
+    text-decoration: none;
+    color: #6b787f;
+  }
+  .survey-footer-privacy-text {
+    text-decoration: none;
+    color: #6b787f;
+  }
+}
+
+.survey-page .survey-title-container {
+  min-height: 20px;
+  overflow: hidden;
+  text-align: center;
+}
+.survey-page .question-body,
+.survey-page .question-body-font-theme,
+.file-upload-clear-btn,
+.slider-clear a,
+::ng-deep nz-form-label label {
+  color: #333e48;
+  font-size: 18px !important;
+  font-style: normal;
+  font-weight: 300;
+  text-decoration: none;
+  line-height: 1.25;
+}
+
+.thank-you-v3 .survey-page-body .survey-title-table,
+.password-wrapper-v3 .survey-page-body .survey-title-table {
+  margin: 40px 0 0 0;
+}
+.survey-page .survey-title-cell {
+  padding: 0;
+  vertical-align: middle;
+}
+.survey-title-table {
+  table-layout: fixed;
+  width: 100%;
+}
+.survey-page .survey-page-body {
+  padding: 80px 140px 0 140px;
+}
+@media only screen and (max-width: 768px) {
+  .survey-page .survey-page-body {
+    padding: 80px 80px 0 80px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .survey-page .survey-page-body {
+    padding: 40px 40px 0 40px;
+  }
+  .ant-form-item-label {
+    text-align: center;
+  }
+}
+
+.survey-page .password-invalid-message {
+  display: inline-block;
+  padding-left: 5px;
+}
+.password-invalid-message {
+  margin: 40px 0 0 0;
+  color: red !important;
+}
+.survey-page .question-validation-theme,
+.survey-page .slider-warning,
+.survey-page .password-invalid-message,
+.survey-page .question-preset-theme {
+  color: #333e48;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  text-decoration: none;
+  outline: 0;
+}
+.password-message {
+  margin: 40px 0 0 0;
+}
+.password-field {
+  margin: 40px 0;
+}

@@ -1,0 +1,27 @@
+<ng-template #header>
+  <nz-breadcrumb>
+    <nz-breadcrumb-item>{{'admin.layout.ADMIN' | translate}}</nz-breadcrumb-item>
+    <nz-breadcrumb-item>{{'admin.layout.SURVEY_FORMS' | translate}}</nz-breadcrumb-item>
+  </nz-breadcrumb>
+</ng-template>
+
+<app-page [header]="header" [title]="'admin.layout.SURVEY_FORM_MANAGERMENT' | translate">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzLg]="24" [nzMd]="24" [nzSm]="24" [nzXs]="24" [style.marginBottom.px]="24">
+      <nz-card [nzTitle]="'admin.layout.DESIGN_YOUR_SURVEY' | translate" [style.marginBottom.px]="24" [nzExtra]="extraTemplate">
+        <div nz-row *ngIf="surveyFormDetail">
+          <survey-creator
+            [json]="surveyFormDetail.json"
+            (surveySaved)="onSurveySaved($event)">
+          </survey-creator>
+        </div>
+        <nz-skeleton *ngIf="!surveyFormDetail" [nzActive]="true"></nz-skeleton>
+      </nz-card>
+      <ng-template #extraTemplate>
+        <button nz-button nzType="dashed" [routerLink]="['/admin', 'survey-forms']">
+          <i nz-icon nzType="left" nzTheme="outline"></i> Cancel
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</app-page>

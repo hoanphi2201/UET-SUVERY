@@ -1,0 +1,177 @@
+<ng-container *ngIf="surveyCollectorDetail?.status === 'OPEN' && isCorrectPassword">
+  <div class="survey-page">
+    <div class="container">
+      <ng-container>
+        <ng-container *ngIf="!surveyFormDetail?.json?.title">
+          <h1 class="survey-title">
+            <span class="title-text"> {{ surveyFormDetail?.title }} </span>
+          </h1>
+          <h5>
+            <span class="description-text">{{ surveyFormDetail?.description }}</span>
+          </h5>
+        </ng-container>
+        <app-survey
+          (submitSurvey)="onSubmitSurveyResponse($event)"
+          [json]="surveyFormDetail.json">
+        </app-survey>
+      </ng-container>
+      <ng-container *ngIf="displaySurveyResults">
+        <div class="wds-type-section-title" translate>default.layout.YOUR_SURVEY_RESPONSE</div>
+        <app-survey-response
+          [data]="dataSurveyResults"
+          [disabled]="true"
+          [json]="surveyFormDetail.json">
+        </app-survey-response>
+      </ng-container>
+    </div>
+    <footer class="survey-footer bottom">
+      <div class="standard-footer notranslate">
+        <p class="survey-footer-title">
+          {{ 'default.layout.POWERED_BY' | translate }}
+          <a target="_blank" class="footer-brand-name survey-footer-link">
+            <img
+              src="./assets/images/logo/full-logo-green.png"
+              alt="UetSurvey"
+              class="responsive-logo"/>
+          </a>
+        </p>
+          {{ 'default.layout.SEE_HOW_EASY_IT_IS_TO' | translate }}
+        <a
+          target="_blank"
+          class="survey-footer-link create-a-survey"
+          [routerLink]="['/dashboard']"
+          translate >default.layout.CREATE_A_SURVEY</a >.
+      </div>
+      <div class="survey-footer-privacy-link-container">
+        <a
+          target="_blank"
+          class="survey-footer-link survey-footer-privacy-link"
+          href="">Privacy</a>
+        <span class="survey-footer-privacy-text"> &amp; </span>
+        <a
+          target="_blank"
+          class="survey-footer-link survey-footer-privacy-link"
+          href="">Cookie Policy</a>
+      </div>
+    </footer>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="surveyCollectorDetail?.status === 'OPEN' && !isCorrectPassword">
+  <div class="survey-page">
+    <div class="container survey-page-body question-body-font-theme">
+      <div class="survey-title-container clearfix survey-title-align-left has-survey-title ">
+        <div class="survey-title-table-wrapper">
+          <table role="presentation" class="survey-title-table table-reset">
+            <tbody>
+              <tr>
+                <td class="survey-title-cell">
+                  <h1 class="survey-title user-generated notranslate">
+                    <span class="title-text">
+                      {{ surveyFormDetail.title }}
+                    </span>
+                  </h1>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="errorPasswordMessage" class="password-invalid-message user-generated clearfix">
+          <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+          {{ errorPasswordMessage }}
+        </div>
+        <div class="password-message user-generated clearfix" translate>
+          default.layout.THIS_SURVEY_REQUIRES_A_PASSWORD_IF_YOU_DO_NOT_KNOW_THE_PASSWORD_CONTACT_THE_AUTHOR_OF_THIS_SURVEY_FOR_FURTHER_ASSISTANCE.
+        </div>
+        <div class="password-field">
+          <form nz-form [formGroup]="form">
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password"
+                >{{ 'default.layout.ENTER_PASSWORD' | translate }}
+              </nz-form-label>
+              <nz-form-control [nzSm]="14" [nzXs]="24">
+                <input
+                  tabindex="1"
+                  nz-input
+                  autocomplete="password"
+                  type="password"
+                  formControlName="password" />
+              </nz-form-control>
+            </nz-form-item>
+            <field-error-display [displayError]="isFieldValid(form, 'password')" [errors]="f.password.errors"></field-error-display>
+          </form>
+        </div>
+        <button tabindex="2" (click)="onSubmitPassword(form)" nz-button nzType="primary" nzSize="large">
+          {{ 'default.layout.SUBMIT_PASSWORD' | translate | uppercase }}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="surveyCollectorDetail?.status === 'CLOSED'">
+  <div class="wrapper">
+    <div class="error-message-wrapper">
+      <h1 class="wds-type-page-title" translate>
+        default.layout.OH_BANANAS
+      </h1>
+      <div class="error-message-container">
+        <h2 class="wds-type-section-title">
+          {{ surveyCollectorDetail?.closedMessage }}
+        </h2>
+        <a href="" class="error-logo" target="_top">
+          <img
+            src="./assets/images/logo/full-logo-green.png"
+            alt="UetSurvey"/>
+        </a>
+        <h3 class="wds-type-card-title" translate>
+          default.layout.WANT_TO_CREATE_YOUR_OWN_SURVEY
+        </h3>
+        <button [routerLink]="['/auth', 'signup']" nz-button nzType="primary" nzSize="large">
+          {{'default.layout.SIGN_UP_FREE' | translate}}
+        </button>
+        <div class="links">
+          <a href="" target="_top">UetSurvey Home</a>|
+          <a href="" target="_top">Sitemap</a>|
+          <a href="" target="_top">How It Works</a>
+        </div>
+        <div class="links">
+          <a href="" target="_top">Survey Types</a>|
+          <a href="" target="_top">Customer Satisfaction Surveys</a>|
+          <a href="" target="_top">Employee Surveys</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!surveyFormDetail && !surveyCollectorDetail">
+  <div class="wrapper">
+    <div class="error-message-wrapper">
+      <h1 class="wds-type-page-title" translate>default.layout.OH_BANANAS</h1>
+      <div class="error-message-container">
+        <h2 class="wds-type-section-title" translate>default.layout.WE_CANT_FIND_THE_PAGE_YOU_REQUESTED</h2>
+        <p translate>
+          default.layout.IF_YOU_ARE_TRYING_TO_ACCESS_A_SURVEY_PLEASE_CONTACT_THE_SURVEY_ADMINISTRATOR_THE_URL_MAY_HAVE_BEEN_CHANGED_OR_THE_SURVEY_MAY_NO_LONGER_EXIST
+        </p>
+        <a href="" class="error-logo" target="_top">
+          <img
+            src="./assets/images/logo/full-logo-green.png"
+            alt="UetSurvey"/>
+        </a>
+        <h3 class="wds-type-card-title" translate>default.layout.WANT_TO_CREATE_YOUR_OWN_SURVEY</h3>
+        <button [routerLink]="['/auth', 'signup']" nz-button nzType="primary" nzSize="large">Sign Up FREE</button>
+        <div class="links">
+          <a href="" target="_top">UetSurvey Home</a>|
+          <a href="" target="_top">Sitemap</a>|
+          <a href="" target="_top">How It Works</a>
+        </div>
+        <div class="links">
+          <a href="" target="_top">Survey Types</a>|
+          <a href="" target="_top">Customer Satisfaction Surveys</a>|
+          <a href="" target="_top">Employee Surveys</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

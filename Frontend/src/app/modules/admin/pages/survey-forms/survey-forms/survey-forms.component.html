@@ -1,0 +1,224 @@
+<ng-template #header>
+  <nz-breadcrumb>
+    <nz-breadcrumb-item>{{'admin.layout.ADMIN' | translate}}</nz-breadcrumb-item>
+    <nz-breadcrumb-item>{{'admin.layout.SURVEY_FORMS' | translate}}</nz-breadcrumb-item>
+  </nz-breadcrumb>
+</ng-template>
+
+<app-page [header]="header" [title]="'admin.layout.SURVEY_FORM_MANAGERMENT' | translate">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzLg]="24" [nzMd]="24" [nzSm]="24" [nzXs]="24" [style.marginBottom.px]="24">
+      <nz-card [style.marginBottom.px]="24">
+        <div nz-row>
+          <nz-table
+            #surveyForm
+            nzShowPagination
+            nzShowSizeChanger
+            [nzData]="listOfAllData"
+            [nzPageSize]="pagging.pageSize"
+            [nzTotal]="pagging.total"
+            [nzFrontPagination]="false"
+            (nzPageIndexChange)="pageIndexChange($event)"
+            (nzPageSizeChange)="pageSizeChange($event)"
+            [nzBordered]="true"
+            [nzTitle]="titleTemplate"
+          >
+            <thead (nzSortChange)="sort($event)" nzSingleSort>
+              <tr *ngIf="columns.length > 0">
+                <th>{{ 'admin.layout.TABLE_NO' | translate }}</th>
+                <th
+                  nzShowCheckbox
+                  [(nzChecked)]="isAllDisplayDataChecked"
+                  (nzCheckedChange)="checkAll($event)"
+                  [nzIndeterminate]="isIndeterminate">
+                </th>
+                <ng-container *ngFor="let column of columns">
+                  <th
+                    nzCustomFilter
+                    *ngIf="!column.hidden"
+                    [nzShowSort]="column.sortable"
+                    [nzSortKey]="column.id"
+                    [nzShowFilter]="column.filter"
+                    [nzFilters]="column.filter ? column.filter : []"
+                    (nzFilterChange)="filter($event, column.filterKey || column.id)">
+                    {{ column.header | translate }}
+                    <i
+                      *ngIf="column.search"
+                      class="ant-table-filter-icon"
+                      nz-icon
+                      nz-dropdown
+                      #dropdown="nzDropdown"
+                      nzType="search"
+                      [nzDropdownMenu]="menuSearch"
+                      [class.ant-table-filter-open]="dropdown.nzVisible"
+                      nzTrigger="click"
+                      nzPlacement="bottomRight"
+                      [nzClickHide]="false"
+                      nzTableFilter
+                      (click)="searchKey = column.id">
+                    </i>
+                  </th>
+                </ng-container>
+                <th [nzAlign]="'center'">{{ 'admin.layout.ACTION' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of surveyForm.data; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td
+                  nzShowCheckbox
+                  [(nzChecked)]="mapOfCheckedId[data.id]"
+                  [nzDisabled]="data.disabled"
+                  (nzCheckedChange)="checkItem(data.id, $event)">
+                </td>
+                <ng-container *ngFor="let column of columns">
+                  <td *ngIf="!column.hidden">
+                    <ng-container [ngSwitch]="column.type">
+                      <ng-container *ngSwitchCase="'text'">
+                        <p
+                          *ngIf="data[column.id] && data[column.id].length > 12"
+                          [nzTooltipTitle]="data[column.id]"
+                          nzTooltipPlacement="top"
+                          nz-tooltip>
+                          {{ data[column.id] | summary }}
+                        </p>
+                        <p *ngIf="!data[column.id] || data[column.id].length <= 12 ">
+                          {{ data[column.id] }}
+                        </p>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'date'">
+                        <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+                        {{ data[column.id] | date: 'yyyy-MM-dd hh:mm'}}</ng-container>
+                    </ng-container>
+                  </td>
+                </ng-container>
+                <td [nzAlign]="'center'">
+                  <a [nzTrigger]="'click'" [nzDropdownMenu]="menuAction" [nzPlacement]="'bottomCenter'" nz-dropdown>
+                    <i nz-icon nzType="ellipsis" nzTheme="outline" class="icon-action"></i>
+                  </a>
+                  <nz-dropdown-menu #menuAction="nzDropdownMenu">
+                    <ul class="dropdown-action" nz-menu nzSelectable>
+                      <li (click)="openModal( tplTitleModal, tplContentModal, tplFooterModal, data)" nz-menu-item>
+                        <i nz-icon nzType="edit" nzTheme="outline"></i>
+                        {{ 'admin.layout.EDIT' | translate }}
+                      </li>
+                      <li (click)="showDeleteConfirm(data.id)" nz-menu-item>
+                        <i nz-icon nzType="delete" nzTheme="outline"></i>
+                        {{ 'admin.layout.DELETE' | translate }}
+                      </li>
+                      <li [routerLink]="['/admin', 'survey-forms', data.id]" nz-menu-item>
+                        <i nz-icon nzType="form" nzTheme="outline"></i>
+                        {{ 'admin.layout.CREATOR_SURVEY' | translate }}
+                      </li>
+                      <li (click)="viewSurveyForm(data)" nz-menu-item>
+                        <i nz-icon nzType="eye" nzTheme="outline"></i>
+                        {{ 'admin.layout.VIEW_SURVEY' | translate }}
+                      </li>
+                    </ul>
+                  </nz-dropdown-menu>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+</app-page>
+
+<!-- Title Table -->
+<ng-template #titleTemplate>
+  <app-title-table 
+    [numberOfChecked]="numberOfChecked" 
+    [results]="pagging.total" 
+    [columns]="columns" 
+    (export)="onExport($event)"
+    (openForm)="openModal(tplTitleModal, tplContentModal, tplFooterModal)">
+    <ul #action class="ant-dropdown-menu ant-dropdown-menu-root ant-dropdown-menu-light ant-dropdown-menu-vertical">
+      <li class="ant-dropdown-menu-item" (click)="showDeleteConfirm()">
+        {{ 'admin.layout.DELETE_CHECK_USERS' | translate }}
+      </li>
+    </ul>
+  </app-title-table>
+</ng-template>
+<!-- End Title Table -->
+
+<!-- Box Search -->
+<nz-dropdown-menu #menuSearch="nzDropdownMenu">
+  <div class="search-box">
+    <input type="text" nz-input [placeholder]="'admin.layout.SEARCH' | translate" [(ngModel)]="searchValue"/>
+    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+      {{ 'admin.layout.SEARCH' | translate }}
+    </button>
+    <button nz-button nzSize="small" (click)="reset()">
+      {{ 'admin.layout.RESET' | translate }}
+    </button>
+  </div>
+</nz-dropdown-menu>
+<!-- End Box Search -->
+
+<!-- Template Modal -->
+<ng-template #tplTitleModal>
+  <span>{{(editing ? 'admin.layout.EDIT_SURVEY_FORM' : 'admin.layout.CREATE_NEW_SURVEY_FORM') | translate}}</span>
+</ng-template>
+<ng-template #tplContentModal>
+  <form #formDirective="ngForm" [formGroup]="form" nz-form>
+    <div nz-row nzGutter="24">
+      <div nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-label>{{ 'admin.layout.TITLE' | translate }}</nz-form-label>
+          <nz-form-control [ngClass]="{ 'has-error': isFieldValid(form, 'title') }">
+            <input 
+              formControlName="title" 
+              [(ngModel)]="selectedEdit.title" 
+              nz-input 
+              [placeholder]="'admin.layout.ENTER_TITLE' | translate"/>
+          </nz-form-control>
+          <field-error-display [displayError]="isFieldValid(form, 'title')" [errors]="f.title.errors"></field-error-display>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row nzGutter="24">
+      <div nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-label>{{'admin.layout.DESCRIPTION' | translate}}</nz-form-label>
+          <nz-form-control [ngClass]="{ 'has-error': isFieldValid(form, 'description') }">
+            <input
+              formControlName="description"
+              [(ngModel)]="selectedEdit.description"
+              nz-input
+              [placeholder]="'admin.layout.ENTER_DESCRIPTION' | translate"/>
+          </nz-form-control>
+          <field-error-display [displayError]="isFieldValid(form, 'description')" [errors]="f.description.errors"></field-error-display>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<ng-template #tplFooterModal>
+  <button nz-button nzType="default" (click)="closeModal()" class="mr-8">
+    {{ 'admin.layout.CANCEL' | translate }}
+  </button>
+  <button *ngIf="editing" nz-button nzType="default" (click)="gotoSurveyCreator()" class="mr-8">
+    {{ 'admin.layout.CREATOR_SURVEY' | translate }}
+  </button>
+  <button nz-button nzType="primary" (click)="onAddSurveyForm(form, formDirective)" [nzLoading]="buttonLoading">
+    {{ 'admin.layout.SUBMIT' | translate }}
+  </button>
+</ng-template>
+<!-- End Template Modal -->
+
+<!-- Template Modal -->
+<ng-template #tplTitleModalView>
+  <span>{{ 'admin.layout.VIEW_SURVEY' | translate }}</span>
+</ng-template>
+<ng-template #tplContentModalView>
+  <div *ngIf="selectSurveyView">
+    <app-survey [json]="selectSurveyView.json" [disabled]="true"></app-survey>
+  </div>
+</ng-template>
+<ng-template #tplFooterModalView>
+  <button nz-button nzType="default" (click)="closeModal()" class="mr-8">
+    {{ 'admin.layout.CANCEL' | translate }}
+  </button>
+</ng-template>
